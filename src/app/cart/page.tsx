@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowLeft, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
+import Image from 'next/image';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCartStore();
@@ -47,9 +48,11 @@ export default function CartPage() {
               <div key={item.id} className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.title}
+                      width={80}
+                      height={80}
                       className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
                     />
                   </div>

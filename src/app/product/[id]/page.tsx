@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Star, Plus, Minus } from 'lucide-react';
 import { products } from '@/data/products';
 import { useCartStore } from '@/lib/store';
+import Image from 'next/image';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -45,9 +46,11 @@ export default function ProductDetailPage() {
         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
             <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-              <img
+              <Image
                 src={product.image}
                 alt={product.title}
+                width={500}
+                height={500}
                 className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
               />
             </div>

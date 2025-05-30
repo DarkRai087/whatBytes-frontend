@@ -4,6 +4,7 @@ import { Star } from 'lucide-react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { useCartStore } from '@/lib/store';
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
@@ -22,9 +23,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={`/product/${product.id}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105 cursor-pointer">
         <div className="aspect-square bg-gray-100 flex items-center justify-center">
-          <img
+          <Image
             src={product.image}
             alt={product.title}
+            width={300}
+            height={300}
             className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
           />
         </div>
