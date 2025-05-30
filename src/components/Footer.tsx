@@ -1,3 +1,5 @@
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-8 mt-12 transition-all duration-500 hover:bg-gray-900">
@@ -24,9 +26,15 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4 hover:text-blue-400 transition-colors duration-300">Follow Us</h3>
             <div className="flex space-x-4">
-              <div className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110"></div>
-              <div className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110"></div>
-              <div className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110"></div>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110 flex items-center justify-center">
+                <FaFacebook className="text-white" />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110 flex items-center justify-center">
+                <FaTwitter className="text-white" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-gray-600 rounded hover:bg-blue-500 transition-transform duration-300 transform hover:scale-110 flex items-center justify-center">
+                <FaInstagram className="text-white" />
+              </a>
             </div>
           </div>
         </div>
