@@ -2,36 +2,52 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import ProductCard from "./ProductCard";
 import { products } from "@/data/products";
 import { Product } from "@/types";
 
-export default function ClientSearchParamsHandler() {
+interface ClientSearchParamsHandlerProps {
+  onFilter: (filteredProducts: Product[]) => void;
+  onCategoryChange?: (category: string) => void;
+  onPriceRangeChange?: (range: [number, number]) => void;
+  children?: React.ReactNode;
+}
+
+export default function ClientSearchParamsHandler({
+  onFilter,
+  onCategoryChange,
+  onPriceRangeChange,
+  children,
+}: ClientSearchParamsHandlerProps) {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
   useEffect(() => {
+    // Handle URL parameters
     const category = searchParams.get("category") || "All";
     const price = searchParams.get("price");
 
     setSelectedCategory(category);
+    onCategoryChange?.(category);
 
     if (price) {
       const [min, max] = price.split("-").map(Number);
-      setPriceRange([min, max]);
+      const range: [number, number] = [min, max];
+      setPriceRange(range);
+      onPriceRangeChange?.(range);
     }
-  }, [searchParams]);
+  }, [searchParams, onCategoryChange, onPriceRangeChange]);
 
   useEffect(() => {
     let filtered = products;
 
+    // Filter by category
     if (selectedCategory !== "All") {
       filtered = filtered.filter((product) => product.category === selectedCategory);
     }
 
+    // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(
         (product) =>
@@ -40,26 +56,13 @@ export default function ClientSearchParamsHandler() {
       );
     }
 
+    // Filter by price range
     filtered = filtered.filter(
       (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
     );
 
-    setFilteredProducts(filtered);
-  }, [selectedCategory, searchQuery, priceRange]);
+    onFilter(filtered);
+  }, [selectedCategory, searchQuery, priceRange, onFilter]);
 
-  return (
-    <div>
-      {filteredProducts.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <>{children}</>;
 }
