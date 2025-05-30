@@ -19,7 +19,6 @@ export default function ClientSearchParamsHandler({
   children,
 }: ClientSearchParamsHandlerProps) {
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
 
@@ -48,11 +47,12 @@ export default function ClientSearchParamsHandler({
     }
 
     // Filter by search query
-    if (searchQuery) {
+    if (searchParams.get("query")) {
+      const query = searchParams.get("query")!.toLowerCase();
       filtered = filtered.filter(
         (product) =>
-          product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchQuery.toLowerCase())
+          product.title.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query)
       );
     }
 
@@ -62,7 +62,7 @@ export default function ClientSearchParamsHandler({
     );
 
     onFilter(filtered);
-  }, [selectedCategory, searchQuery, priceRange, onFilter]);
+  }, [selectedCategory, searchParams, priceRange, onFilter]);
 
   return <>{children}</>;
 }
