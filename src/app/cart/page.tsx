@@ -5,6 +5,8 @@ import { ArrowLeft, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import Image from 'next/image';
 
+const TAX_RATE = 0.1; // 10% tax rate
+
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } = useCartStore();
 
@@ -60,7 +62,7 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map((item, index) => {
+            {items.map((item) => {
               const accentColors = ['#D4FF00', '#FF006E', '#FFBE0B', '#00F5FF'];
               const accentColor = accentColors[parseInt(item.id) % accentColors.length];
               
@@ -160,14 +162,14 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600 uppercase">Tax</span>
-                    <span className="font-bold">${(getTotalPrice() * 0.1).toFixed(2)}</span>
+                    <span className="font-bold">${(getTotalPrice() * TAX_RATE).toFixed(2)}</span>
                   </div>
                 </div>
                 
                 <div className="border-t-4 border-[#0A0A0A] pt-4">
                   <div className="flex justify-between items-center">
                     <span className="text-xl font-bold uppercase">Total</span>
-                    <span className="text-3xl font-bold">${(getTotalPrice() * 1.1).toFixed(2)}</span>
+                    <span className="text-3xl font-bold">${(getTotalPrice() + getTotalPrice() * TAX_RATE).toFixed(2)}</span>
                   </div>
                 </div>
                 
