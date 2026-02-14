@@ -1,5 +1,7 @@
 'use client';
 
+import { Sliders } from 'lucide-react';
+
 interface SidebarProps {
   selectedCategory: string;
   priceRange: [number, number];
@@ -13,48 +15,93 @@ export default function Sidebar({
   onCategoryChange,
   onPriceRangeChange
 }: SidebarProps) {
-  const categories = ['All', 'Electronics', 'Clothing', 'Home'];
+  const categories = [
+    { name: 'All', color: '#D4FF00' },
+    { name: 'Electronics', color: '#FF006E' },
+    { name: 'Clothing', color: '#FFBE0B' },
+    { name: 'Home', color: '#00F5FF' }
+  ];
 
   return (
-    <div className="bg-blue-600 text-white p-6 rounded-lg h-fit">
-      <h2 className="text-xl font-bold mb-6">Filters</h2>
+    <div className="space-y-6 sticky top-6">
+      {/* Header */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-[#D4FF00] transform translate-x-1 translate-y-1" />
+        <div className="relative bg-[#0A0A0A] text-white p-6 border-4 border-[#0A0A0A]">
+          <div className="flex items-center gap-3">
+            <Sliders className="w-6 h-6" />
+            <h2 className="text-2xl font-bold uppercase tracking-tight">Filters</h2>
+          </div>
+        </div>
+      </div>
       
-      <div className="mb-8">
-        <h3 className="font-semibold mb-4">Category</h3>
-        <div className="space-y-3">
+      {/* Categories */}
+      <div className="bg-white border-4 border-[#0A0A0A] p-6">
+        <h3 className="font-bold mb-4 uppercase tracking-wide text-sm">Category</h3>
+        <div className="space-y-2">
           {categories.map((category) => (
-            <label key={category} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name="category"
-                value={category}
-                checked={selectedCategory === category}
-                onChange={(e) => onCategoryChange(e.target.value)}
-                className="w-4 h-4 text-blue-600"
+            <button
+              key={category.name}
+              onClick={() => onCategoryChange(category.name)}
+              className="relative w-full group"
+            >
+              <div 
+                className={`absolute inset-0 transform transition-transform ${
+                  selectedCategory === category.name 
+                    ? 'translate-x-2 translate-y-2' 
+                    : 'translate-x-1 translate-y-1 group-hover:translate-x-2 group-hover:translate-y-2'
+                }`}
+                style={{ backgroundColor: category.color }}
               />
-              <span>{category}</span>
-            </label>
+              <div 
+                className={`relative px-4 py-3 border-4 border-[#0A0A0A] font-bold uppercase tracking-wide text-sm transition-colors ${
+                  selectedCategory === category.name
+                    ? 'bg-[#0A0A0A] text-white'
+                    : 'bg-white text-[#0A0A0A]'
+                }`}
+              >
+                {category.name}
+              </div>
+            </button>
           ))}
         </div>
       </div>
       
-      <div>
-        <h3 className="font-semibold mb-4">Price</h3>
+      {/* Price Range */}
+      <div className="bg-white border-4 border-[#0A0A0A] p-6">
+        <h3 className="font-bold mb-4 uppercase tracking-wide text-sm">Price Range</h3>
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
+          <div className="relative">
             <input
               type="range"
               min="0"
               max="1000"
+              step="10"
               value={priceRange[1]}
               onChange={(e) => onPriceRangeChange([priceRange[0], parseInt(e.target.value)])}
-              className="flex-1 h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+              className="w-full h-3 appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, #0A0A0A 0%, #0A0A0A ${(priceRange[1] / 1000) * 100}%, #E5E7EB ${(priceRange[1] / 1000) * 100}%, #E5E7EB 100%)`,
+              }}
             />
           </div>
-          <div className="flex justify-between text-sm">
-            <span>{priceRange[0]}</span>
-            <span>{priceRange[1]}</span>
+          <div className="flex justify-between items-center">
+            <div className="bg-[#0A0A0A] text-white px-3 py-2 border-2 border-[#0A0A0A] font-mono font-bold text-sm">
+              ${priceRange[0]}
+            </div>
+            <div className="bg-[#FF006E] text-white px-3 py-2 border-2 border-[#0A0A0A] font-mono font-bold text-sm">
+              ${priceRange[1]}
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Decorative element */}
+      <div className="hidden lg:block">
+        <div className="border-4 border-[#0A0A0A] p-6 bg-[#D4FF00] transform rotate-2">
+          <p className="font-mono text-xs text-[#0A0A0A] uppercase tracking-wider">
+            🔥 Neo-Brutalist <br/>Design System
+          </p>
         </div>
       </div>
     </div>
